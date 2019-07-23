@@ -95,4 +95,19 @@ describe('post routes', () => {
         });
       });
   });
+
+  it('can patch a post by id', () => {
+    return agent
+      .patch(`/api/v1/posts/${post._id}`)
+      .send({
+        caption: 'NEW caption yeaa'
+      })
+      .then(res => {
+        const postJSON = JSON.parse(JSON.stringify(post));
+        expect(res.body).toEqual({
+          ...postJSON,
+          caption: 'NEW caption yeaa'
+        });
+      });
+  });
 });
