@@ -110,4 +110,13 @@ describe('post routes', () => {
         });
       });
   });
+  
+  it('can delete a post by id', () => {
+    return agent
+      .delete(`/api/v1/posts/${post._id}`)
+      .then(res => { 
+        const postJSON = JSON.parse(JSON.stringify(post));
+        expect(res.body).toEqual(postJSON);
+      });
+  });
 });
