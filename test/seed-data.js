@@ -14,8 +14,15 @@ module.exports = async({ users = 5, posts = 10, comments = 20 } = { users: 5, po
     }))
   );
 
+  const usersPost = await Post.create({
+    user: createdUsers[0]._id,
+    photoURL: chance.domain(),
+    caption: chance.animal(),
+    stringTags: [chance.word(), chance.word()]
+  });
+
   const createdPosts = await Post.create(
-    [...Array(posts)].map(() => ({
+    [...Array(posts - 1)].map(() => ({
       user: chance.pickone(createdUsers)._id,
       photoURL: chance.domain(),
       caption: chance.animal(),
@@ -23,8 +30,14 @@ module.exports = async({ users = 5, posts = 10, comments = 20 } = { users: 5, po
     }))
   );
 
+  const usersComment = await Comment.create({
+    commentBy: createdUsers[0]._id,
+    post: chance.pickone(createdPosts)._id,
+    comment: chance.sentence()
+  });
+
   const createdComments = await Comment.create(
-    [...Array(comments)].map(() => ({
+    [...Array(comments - 1)].map(() => ({
       commentBy: chance.pickone(createdUsers)._id,
       post: chance.pickone(createdPosts)._id,
       comment: chance.sentence()
@@ -33,7 +46,7 @@ module.exports = async({ users = 5, posts = 10, comments = 20 } = { users: 5, po
 
   return {
     users: createdUsers,
-    posts: createdPosts,
-    comments: createdComments
+    posts: [...createdPosts, usersPost],
+    comments: [...createdComments, usersComment]
   };
 };
