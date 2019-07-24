@@ -1,5 +1,5 @@
 language: node_js
 node_js: node
 services: mongodb
-env: MONGODB_URI=mongodb://localhost:27017/travis APP_SECRET=my_shiny_secret
+env: MONGODB_URI=mongodb://localhost:27017/travis APP_SECRET=my_shiny_travis_secret
 
