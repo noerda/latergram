@@ -1,5 +1,4 @@
-const Comment = require('../lib/models/Comment');
-const { getAgent, getPosts, getUsers } = require('./data-helpers');
+const { getAgent, getComments, getPosts, getUsers } = require('./data-helpers');
 
 describe('app routes', () => {
   it('can post a comment', () => {
@@ -21,13 +20,12 @@ describe('app routes', () => {
 
   it('deletes a comment by id', async() => {
     const users = getUsers();
-    const posts = getPosts();
-    const comment = await Comment.create({ commentBy: users[0]._id, post: posts[0]._id, comment: 'Life is hard and then you die.' });
-    const commentJSON = JSON.parse(JSON.stringify(comment));
+    const comments = getComments();
+    const comment = comments.find(c => c.commentBy === users[0]._id);
     return getAgent()
       .delete(`/api/v1/comments/${comment._id}`)
       .then(res => {
-        expect(res.body).toEqual(commentJSON);
+        expect(res.body).toEqual(comment);
       });
   });
 });
